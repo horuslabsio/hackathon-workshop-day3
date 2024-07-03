@@ -34,24 +34,8 @@ mod ModifiedAccount {
         AccountEvent: AccountComponent::Event
     }
 
-    #[constructor]
-    fn constructor(ref self: ContractState, token_contract: ContractAddress, token_id: u256) {
-        self.account.initializer(token_contract, token_id);
-    }
-
     #[abi(embed_v0)]
     impl ModifiedAccountImpl of IModifiedAccount<ContractState> {
-        fn upgrade(ref self: ContractState, new_class_hash: ClassHash) {
-            let caller = get_caller_address();
-            assert(self.account._is_valid_signer(caller), 'not permitted');
-            let (lock_status, _) = self.account._is_locked();
-            assert(!lock_status, 'account is locked!');
-            starknet::syscalls::replace_class_syscall(new_class_hash).unwrap_syscall();
-            self.version.write(self.version.read() + 1);
-        }
-
-        fn version(self: @ContractState) -> u8 {
-            self.version.read()
-        }
+        
     }
 }

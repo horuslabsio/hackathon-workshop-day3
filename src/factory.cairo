@@ -33,32 +33,6 @@ mod TBAFactory {
 
     #[abi(embed_v0)]
     impl FactoryImpl of IFactory<ContractState> {
-        fn create_account(
-            ref self: ContractState,
-            nft_contract_address: ContractAddress,
-            nft_token_id: u256,
-            implementation_hash: felt252,
-            salt: felt252,
-        ) -> ContractAddress {
-            let contract_address = IRegistryLibraryDispatcher {
-                class_hash: REGISTRY_CLASS_HASH.try_into().unwrap()
-            }
-                .create_account(implementation_hash, nft_contract_address, nft_token_id, salt);
-            self.total_deployed.write(self.total_deployed.read() + 1);
-            return contract_address;
-        }
-
-        fn get_account(
-            self: @ContractState,
-            nft_contract_address: ContractAddress,
-            nft_token_id: u256,
-            implementation_hash: felt252,
-            salt: felt252,
-        ) -> ContractAddress {
-            IRegistryLibraryDispatcher {
-                class_hash: REGISTRY_CLASS_HASH.try_into().unwrap()
-            }
-                .get_account(implementation_hash, nft_contract_address, nft_token_id, salt)
-        }
+        
     }
 }
